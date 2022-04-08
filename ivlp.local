@@ -1,0 +1,22 @@
+server {
+	listen 80;
+	listen [::]:80;
+
+	root /var/www/budi/ivlp/web;
+	index index.php index.html index.htm index.nginx-debian.html;
+
+	server_name ivlp.local;
+
+	location ~* /app/uploads/.*.php$ {
+		deny all;
+	}
+
+        location / {
+                try_files $uri $uri/ /index.php$is_args$args;
+        }
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+	}	
+}
